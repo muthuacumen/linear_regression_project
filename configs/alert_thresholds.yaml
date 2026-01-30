@@ -1,0 +1,112 @@
+# =============================================================================
+# ALERT THRESHOLD CONFIGURATION
+# =============================================================================
+# Defines thresholds for maintenance alert generation based on regression outputs.
+#
+# Alert Logic:
+# 1. Predicted current exceeds threshold -> Alert
+# 2. Degradation rate (slope) exceeds threshold -> Alert
+# 3. Predicted time to failure < threshold -> Alert
+
+# =============================================================================
+# SLOPE-BASED THRESHOLDS (Degradation Rate)
+# =============================================================================
+# Slope represents rate of current increase (Amps per hour)
+# Higher slope = faster degradation = more urgent alert
+
+slope_thresholds:
+  info: 0.005       # > 0.12 A/day - Early warning
+  warning: 0.02     # > 0.48 A/day - Moderate concern
+  critical: 0.10    # > 2.4 A/day  - Severe degradation
+
+# =============================================================================
+# CURRENT-BASED THRESHOLDS (Predicted Value)
+# =============================================================================
+# Current as percentage of baseline value
+# Example: 1.25 = 25% above baseline
+
+current_ratio_thresholds:
+  info: 1.10        # 10% above baseline
+  warning: 1.25     # 25% above baseline
+  critical: 1.50    # 50% above baseline
+
+# Absolute current thresholds (Amps)
+# Used as safety limits regardless of baseline
+absolute_current_thresholds:
+  warning: 25.0     # 25A absolute
+  critical: 40.0    # 40A absolute
+
+# =============================================================================
+# TIME-BASED THRESHOLDS (Predicted Failure)
+# =============================================================================
+# Days until predicted failure
+# Alerts triggered when failure is imminent
+
+days_to_failure_thresholds:
+  warning: 14       # 2 weeks before failure -> WARNING
+  critical: 7       # 1 week before failure -> CRITICAL
+
+# =============================================================================
+# FAILURE THRESHOLD
+# =============================================================================
+# Defines when a robot is considered "failed"
+# Value is ratio of baseline current
+
+failure_definition:
+  threshold_ratio: 1.50  # Failure when current > 150% of baseline
+
+  # Per-robot overrides (optional)
+  robot_overrides:
+    Robot_B: 1.25    # Light duty - lower threshold
+    Robot_C: 1.75    # Heavy duty - higher threshold
+    Robot_D: 1.40    # Medium duty
+
+# =============================================================================
+# ALERT COOLDOWN
+# =============================================================================
+# Prevents duplicate alerts within time window
+
+cooldown:
+  enabled: true
+  period_hours: 1   # Minimum hours between same alert
+
+# =============================================================================
+# NOTIFICATION ROUTING
+# =============================================================================
+# Where to send alerts based on severity
+
+routing:
+  critical:
+    - pagerduty
+    - email
+    - slack
+  warning:
+    - email
+    - slack
+  info:
+    - dashboard
+    - log
+
+# =============================================================================
+# EXAMPLE ALERT MESSAGES
+# =============================================================================
+# Template messages for each alert level
+
+message_templates:
+  critical: |
+    [CRITICAL] {robot_id} requires IMMEDIATE maintenance.
+    Degradation Rate: {slope:.4f} A/hr
+    Predicted Failure: {days_to_failure:.1f} days
+    Current: {current_value:.2f}A (Threshold: {threshold_value:.2f}A)
+    ACTION: Stop robot immediately and inspect.
+
+  warning: |
+    [WARNING] {robot_id} showing elevated degradation.
+    Degradation Rate: {slope:.4f} A/hr
+    Predicted Failure: {days_to_failure:.1f} days
+    ACTION: Schedule maintenance within 2 weeks.
+
+  info: |
+    [INFO] {robot_id} showing early wear signs.
+    Degradation Rate: {slope:.4f} A/hr
+    ACTION: Monitor closely. Log for trend analysis.

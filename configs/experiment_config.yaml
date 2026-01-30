@@ -1,0 +1,105 @@
+# =============================================================================
+# EXPERIMENT CONFIGURATION
+# =============================================================================
+# This file controls all experiment parameters without touching code.
+# Modify these values to run different experiments.
+
+# =============================================================================
+# DATA SOURCE
+# =============================================================================
+data:
+  source: "csv"  # Options: csv, database, api
+  csv_path: "../data/raw/all_robots_combined.csv"
+
+  # Database connection (if source: database)
+  database:
+    use_config_file: true
+    config_file: "db_config.yaml"
+
+  # Filter options
+  robot_id: null  # null = all robots, or specify "Robot_A", "Robot_B", etc.
+
+# =============================================================================
+# PREPROCESSING
+# =============================================================================
+preprocessing:
+  # Missing value handling
+  missing_value_strategy: "forward_fill"  # Options: forward_fill, backward_fill, mean, median, drop
+
+  # Feature scaling
+  scaling_method: "minmax"  # Options: minmax, standard, none
+
+  # Train/test split
+  train_test_split:
+    ratio: 0.8  # 80% train, 20% test
+    method: "temporal"  # Options: temporal (time-based), random
+    random_seed: 42
+
+# =============================================================================
+# MODEL CONFIGURATION
+# =============================================================================
+model:
+  # Feature and target selection (UNIVARIATE)
+  feature: "elapsed_hours"  # X: Independent variable
+  target: "mean_current"    # y: Dependent variable
+
+  # Why univariate?
+  # - elapsed_hours represents time progression
+  # - mean_current represents robot health
+  # - Positive slope indicates degradation over time
+
+  # Gradient descent parameters (for from-scratch implementation)
+  gradient_descent:
+    learning_rate: 0.01
+    n_iterations: 100   # Reduced from 1000 for faster training
+    convergence_threshold: 1e-6
+
+  # Model type
+  implementation: "both"  # Options: scratch, sklearn, both
+
+# =============================================================================
+# EVALUATION
+# =============================================================================
+evaluation:
+  metrics:
+    - "rmse"
+    - "mae"
+    - "r2"
+
+  visualization:
+    save_plots: true
+    output_dir: "../experiments/plots/"
+    plot_format: "png"
+    dpi: 150
+
+# =============================================================================
+# ALERT THRESHOLDS
+# =============================================================================
+alerts:
+  use_config_file: true
+  config_file: "alert_thresholds.yaml"
+
+# =============================================================================
+# EXPERIMENT TRACKING
+# =============================================================================
+tracking:
+  results_file: "../experiments/results.csv"
+  log_level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR
+  save_model: true
+  model_output_dir: "../experiments/models/"
+
+# =============================================================================
+# NOTES
+# =============================================================================
+# How changing this file alters experiments:
+#
+# 1. Change data.robot_id to analyze specific robots
+# 2. Change preprocessing.scaling_method to compare normalization approaches
+# 3. Change model.feature to test different predictors
+# 4. Change model.gradient_descent.learning_rate to tune convergence
+# 5. Change train_test_split.ratio to adjust data allocation
+#
+# Example experiments:
+# - Experiment 1: Default config (elapsed_hours -> mean_current)
+# - Experiment 2: Change feature to "Axis #1" for axis-specific analysis
+# - Experiment 3: Change train_test_split.ratio to 0.7 for more test data

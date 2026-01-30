@@ -1,0 +1,115 @@
+================================================================================
+LINEAR REGRESSION PROJECT - EXECUTION PLAN
+================================================================================
+
+This file documents the complete project setup for the ML Workshop.
+Execute in order or run specific sections as needed.
+
+================================================================================
+PHASE 0: ENVIRONMENT SETUP (COMPLETED)
+================================================================================
+
+1. Create project folder:
+   mkdir "C:\Users\muthu\OneDrive\Desktop\linear_regression_project"
+
+2. Create virtual environment:
+   cd "C:\Users\muthu\OneDrive\Desktop\linear_regression_project"
+   python -m venv .venv
+
+3. Activate virtual environment:
+   .venv\Scripts\activate  (Windows)
+   source .venv/bin/activate  (Linux/Mac)
+
+4. Install dependencies:
+   pip install -r requirements.txt
+
+================================================================================
+PHASE 1: FOLDER STRUCTURE (COMPLETED)
+================================================================================
+
+linear_regression_project/
+|-- .venv/                    # Virtual environment
+|-- data/                     # Raw and processed data
+|   |-- raw/                  # Original CSV files
+|   |-- processed/            # Cleaned, split data
+|   |-- synthetic/            # Generated robot data
+|-- notebooks/                # Jupyter notebooks for workshop
+|   |-- 01_problem_definition.ipynb
+|   |-- 02_preprocessing.ipynb
+|   |-- 03_regression_from_scratch.ipynb
+|   |-- 04_regression_sklearn.ipynb
+|   |-- 05_evaluation.ipynb
+|   |-- RobotPM_MLOps.ipynb   # Main workshop notebook
+|-- src/                      # Modular Python scripts
+|   |-- __init__.py
+|   |-- data_loader.py
+|   |-- preprocessing.py
+|   |-- model.py
+|   |-- evaluation.py
+|   |-- synthetic_generator.py
+|   |-- alert_system.py
+|-- configs/                  # Configuration files
+|   |-- experiment_config.yaml
+|   |-- db_config.yaml
+|   |-- alert_thresholds.yaml
+|-- experiments/              # Experiment tracking
+|   |-- results.csv
+|   |-- logs/
+|-- requirements.txt
+|-- README.md
+|-- projectexecution.txt      # This file
+
+================================================================================
+PHASE 2: EXECUTE COMMANDS BY BATCH
+================================================================================
+
+BATCH 1: Copy source data
+--------------------------
+Copy robot data from DataStreamVisualization_Workshop1:
+  - Copy data/RMBR4-2_export_test.csv to linear_regression_project/data/raw/
+  - Copy data/all_robots_combined.csv to linear_regression_project/data/raw/
+
+BATCH 2: Install dependencies
+-----------------------------
+pip install pandas numpy matplotlib seaborn scikit-learn pyyaml jupyter psycopg2-binary
+
+BATCH 3: Run notebooks in order
+-------------------------------
+jupyter notebook notebooks/
+
+BATCH 4: Test modular scripts
+-----------------------------
+python src/data_loader.py
+python src/preprocessing.py
+python src/model.py
+python src/evaluation.py
+
+BATCH 5: Generate synthetic data
+--------------------------------
+python src/synthetic_generator.py
+
+BATCH 6: Run complete pipeline
+------------------------------
+python -m src.pipeline
+
+================================================================================
+PROMPT COMPLETION STATUS
+================================================================================
+
+[X] Prompt 1  - Problem Definition
+[X] Prompt 2  - Data Preprocessing Specification
+[X] Prompt 3  - Linear Regression From Scratch
+[X] Prompt 4  - Linear Regression Using scikit-learn
+[X] Prompt 5  - Model Evaluation & Visualization
+[X] Prompt 6  - Refactor into Modular Python Scripts
+[X] Prompt 7  - Validate Modular Design
+[X] Prompt 8  - Data Streaming & Multi-Robot Expansion
+[X] Prompt 9  - Synthetic Robot Data Generation
+[X] Prompt 10 - Project Folder Architecture
+[X] Prompt 11 - YAML Configuration Design
+[X] Prompt 12 - Failure Prediction & Alert Logic
+[X] Prompt 13 - MLOps Design Patterns
+[X] Prompt 14 - Experiment Tracking
+[X] Prompt 15 - Repository Readiness Checklist
+
+================================================================================
