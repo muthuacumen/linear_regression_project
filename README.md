@@ -2,7 +2,7 @@
 
 A machine learning project demonstrating **univariate linear regression** for predictive maintenance of industrial robots. This workshop covers the complete ML lifecycle from problem definition to production-ready MLOps practices.
 
-## Problem Definition (Prompt 1)
+## Problem Definition
 
 **Objective:** Predict robot motor degradation over time using univariate linear regression.
 
@@ -31,7 +31,7 @@ A machine learning project demonstrating **univariate linear regression** for pr
 - **Experiment Tracking** (Prompt 14): Auditable results logging per robot
 - **Synthetic Data Generation** (Prompt 9): Realistic multi-robot sensor data
 
-## Project Structure (Prompt 10)
+## Project Structure
 
 ```
 linear_regression_project/
@@ -63,19 +63,19 @@ linear_regression_project/
 
 ## Design Decisions
 
-### Preprocessing Pipeline (Prompt 2)
+### Preprocessing Pipeline
 1. **Missing Values:** Forward fill (preserves temporal order for time-series)
 2. **Feature Scaling:** MinMax normalization to [0,1]
 3. **Train/Test Split:** Temporal 80/20 (prevents future data leakage)
 
-### Modular Architecture (Prompts 6 & 7)
+### Modular Architecture
 Benefits of separating code into modules:
 - **Separation of concerns:** Each file has single responsibility
 - **Easier debugging:** Isolate issues to specific modules
 - **Reusability:** Import functions across notebooks/scripts
 - **Scalability:** Add new models without modifying existing code
 
-### Configuration-Driven Experiments (Prompt 11)
+### Configuration-Driven Experiments
 YAML configs control:
 - Data source (CSV/DB/API)
 - Learning rate and iterations
@@ -85,14 +85,14 @@ YAML configs control:
 
 Change experiments without touching code.
 
-### Fleet-Wide Processing (Prompt 8)
+### Fleet-Wide Processing
 The system processes multiple robots individually:
 - **Robot_A, Robot_B, Robot_C, Robot_D** each get separate regression models
 - Individual degradation slopes computed per robot
 - Fleet-wide alert report generated
 - Per-robot metrics logged to `experiments/results.csv`
 
-### Failure Prediction & Alerts (Prompt 12)
+### Failure Prediction & Alerts
 Alert levels based on predicted days to failure:
 | Level | Condition | Action |
 |-------|-----------|--------|
@@ -101,7 +101,7 @@ Alert levels based on predicted days to failure:
 | **INFO** | 14-30 days | Monitor closely |
 | **HEALTHY** | > 30 days | Normal operation |
 
-### MLOps Best Practices (Prompt 13)
+### MLOps Best Practices
 | Principle | Implementation |
 |-----------|----------------|
 | Separation of concerns | `src/` modules |
@@ -165,7 +165,7 @@ python src/synthetic_generator.py
 | jupyter | >= 1.0.0 | Interactive notebooks |
 | psycopg2-binary | >= 2.9.0 | PostgreSQL connectivity |
 
-## Repository Checklist (Prompt 15)
+## Repository Checklist
 
 - [x] Frozen codebase with modular structure
 - [x] `requirements.txt` with pinned versions
