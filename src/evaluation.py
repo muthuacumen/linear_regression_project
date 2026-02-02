@@ -19,6 +19,42 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Dict, Tuple, Optional, Any
 from dataclasses import dataclass
+from pathlib import Path
+from datetime import datetime
+
+# Directory for saving plots
+PLOTS_DIR = Path(__file__).parent.parent / "experiments" / "plots"
+
+
+def _save_plot(fig: plt.Figure, plot_type: str, model_name: str = "model") -> str:
+    """
+    Save plot to experiments/plots directory with timestamped filename.
+
+    Parameters:
+    -----------
+    fig : plt.Figure
+        The figure to save
+    plot_type : str
+        Type of plot (e.g., 'regression', 'residuals', 'cost_history')
+    model_name : str
+        Model name for filename
+
+    Returns:
+    --------
+    str : Path where the figure was saved
+    """
+    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Sanitize model name for filename
+    safe_name = model_name.replace(" ", "_").replace("/", "-").lower()
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"{plot_type}_{safe_name}_{timestamp}.png"
+
+    save_path = PLOTS_DIR / filename
+    fig.savefig(save_path, dpi=150, bbox_inches='tight')
+    print(f"Plot saved to: {save_path}")
+
+    return str(save_path)
 
 
 @dataclass
@@ -234,6 +270,10 @@ def plot_regression(
 
     plt.tight_layout()
 
+    # Auto-save to experiments/plots
+    _save_plot(fig, "regression", model_name)
+
+    # Also save to custom path if provided
     if save_path:
         plt.savefig(save_path, dpi=150, bbox_inches='tight')
         print(f"Figure saved to: {save_path}")
@@ -289,6 +329,10 @@ def plot_residuals(
 
     plt.tight_layout()
 
+    # Auto-save to experiments/plots
+    _save_plot(fig, "residuals", model_name)
+
+    # Also save to custom path if provided
     if save_path:
         plt.savefig(save_path, dpi=150, bbox_inches='tight')
         print(f"Figure saved to: {save_path}")
@@ -332,6 +376,10 @@ def plot_cost_history(
                 arrowprops=dict(arrowstyle='->', color='red'),
                 fontsize=10)
 
+    # Auto-save to experiments/plots
+    _save_plot(fig, "cost_history", model_name)
+
+    # Also save to custom path if provided
     if save_path:
         plt.savefig(save_path, dpi=150, bbox_inches='tight')
         print(f"Figure saved to: {save_path}")
